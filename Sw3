@@ -1,0 +1,171 @@
+
+!
+! Last configuration change at 17:35:28 WIB Sat Nov 17 2018
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname Sw3
+!
+boot-start-marker
+boot-end-marker
+!
+!
+logging discriminator EXCESS severity drops 6 msg-body drops EXCESSCOLL 
+logging buffered 50000
+logging console discriminator EXCESS
+!
+no aaa new-model
+clock timezone WIB 7 0
+!
+!
+!
+!
+!
+no ip routing
+no ip icmp rate-limit unreachable
+!
+!
+!
+no ip domain-lookup
+no ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree portfast edge bpdufilter default
+spanning-tree extend system-id
+spanning-tree uplinkfast max-update-rate 250
+spanning-tree backbonefast
+!
+vlan internal allocation policy ascending
+!
+vlan 2001
+ name Guest
+!
+vlan 2002
+ name Programmer
+!
+vlan 2003
+ name Production
+!
+vlan 2017
+ name Engineer
+!
+vlan 2018
+ name HRD
+!
+vlan 2019
+ name Manager
+!
+ip tcp synwait-time 5
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Ethernet0/0
+ switchport trunk allowed vlan 2001-2003,2017-2019
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 666
+ switchport mode trunk
+ spanning-tree guard loop
+!
+interface Ethernet0/1
+ switchport trunk allowed vlan 2001-2003,2017-2019
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 666
+ switchport mode trunk
+ spanning-tree guard loop
+!
+interface Ethernet0/2
+ switchport access vlan 2017
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface Ethernet0/3
+!
+interface Ethernet1/0
+!
+interface Ethernet1/1
+!
+interface Ethernet1/2
+!
+interface Ethernet1/3
+!
+interface Ethernet2/0
+!
+interface Ethernet2/1
+!
+interface Ethernet2/2
+!
+interface Ethernet2/3
+!
+interface Ethernet3/0
+!
+interface Ethernet3/1
+!
+interface Ethernet3/2
+!
+interface Ethernet3/3
+!
+interface Vlan1
+ no ip address
+ no ip route-cache
+ shutdown
+!
+interface Vlan2002
+ ip address 172.18.34.252 255.255.255.0
+ no ip route-cache
+!
+interface Vlan2003
+ ip address 172.18.35.124 255.255.255.128
+ no ip route-cache
+!
+interface Vlan2017
+ ip address 172.18.33.252 255.255.254.0
+ no ip route-cache
+!
+interface Vlan2018
+ ip address 172.16.36.60 255.255.255.192
+ no ip route-cache
+!
+ip default-gateway 172.18.34.254
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line vty 0 4
+ login
+!
+!
+end
